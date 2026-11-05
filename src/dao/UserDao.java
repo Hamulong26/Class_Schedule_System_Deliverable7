@@ -138,4 +138,19 @@ public class UserDao {
             return false;
         }
     }
+
+    // --- BAG-ONG METHOD PARA SA UPDATE ROLE UG STATUS ---
+    public boolean updateUserRoleAndStatus(int userId, String newRole, String newStatus) {
+        String sql = "UPDATE users SET roles = ?, status = ? WHERE id = ?";
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, newRole.toUpperCase());
+            pstmt.setString(2, newStatus.toUpperCase());
+            pstmt.setInt(3, userId);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error updating user role and status: " + e.getMessage());
+            return false;
+        }
+    }
 }
